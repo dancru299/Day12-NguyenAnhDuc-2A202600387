@@ -1,14 +1,14 @@
 #  Delivery Checklist — Day 12 Lab Submission
 
-> **Student Name:** _________________________  
-> **Student ID:** _________________________  
-> **Date:** _________________________
+> **Student Name:** Nguyễn Anh Đức
+> **Student ID:** 2A202600387  
+> **Date:** 17/4/2026
 
 ---
 
 ##  Submission Requirements
 
-Submit a **GitHub repository** containing:
+Submit a **GitHub repository**: https://github.com/dancru299/Day12-NguyenAnhDuc-2A202600387
 
 ### 1. Mission Answers (40 points)
 
@@ -45,8 +45,8 @@ Create a file `MISSION_ANSWERS.md` with your answers to all exercises:
 ## Part 3: Cloud Deployment
 
 ### Exercise 3.1: Railway deployment
-- URL: https://your-app.railway.app
-- Screenshot: [Link to screenshot in repo]
+- URL: https://day12-nguyenanhduc-2a202600387-production.up.railway.app
+- Screenshot: ![06-Lab-Complete](screenshots/06-Lab-Complete.png)
 
 ## Part 4: API Security
 
@@ -108,7 +108,7 @@ Create a file `DEPLOYMENT.md` with your deployed service information:
 # Deployment Information
 
 ## Public URL
-https://efficient-exploration-production-a2b0.up.railway.app
+https://day12-nguyenanhduc-2a202600387-production.up.railway.app
 
 ## Platform
 Railway
@@ -117,16 +117,16 @@ Railway
 
 ### Health Check
 ```bash
-curl https://efficient-exploration-production-a2b0.up.railway.app/health
-{"status":"ok","uptime_seconds":365.0,"platform":"Railway","timestamp":"2026-04-17T14:36:51.434290+00:00"}
+curl https://day12-nguyenanhduc-2a202600387-production.up.railway.app/health
+{"status":"ok","version":"1.0.0","environment":"development","checks":{"llm":"openai"}}
 ```
 
 ### API Test (with authentication)
 ```bash
-curl -X POST https://efficient-exploration-production-a2b0.up.railway.app/ask \
+curl -X POST https://day12-nguyenanhduc-2a202600387-production.up.railway.app/ask \
   -H "X-API-Key: 1234567890" \
   -H "Content-Type: application/json" \
-  -d '{"user_id": "test", "question": "Hello"}'
+  -d '{"question": "Tìm khách sạn ở Đà Nẵng dưới 1 triệu một đêm"}'
 ```
 
 ## Environment Variables Set
@@ -161,24 +161,30 @@ curl -X POST https://efficient-exploration-production-a2b0.up.railway.app/ask \
 Before submitting, verify your deployment:
 
 ```bash
+BASE=https://day12-nguyenanhduc-2a202600387-production.up.railway.app
+KEY=1234567890
+
 # 1. Health check
-curl https://your-app.railway.app/health
+curl $BASE/health
+# → {"status":"ok","version":"1.0.0","checks":{"llm":"openai"}}
 
 # 2. Authentication required
-curl https://your-app.railway.app/ask
-# Should return 401
+curl $BASE/ask
+# → 401 Unauthorized
 
 # 3. With API key works
-curl -H "X-API-Key: YOUR_KEY" https://your-app.railway.app/ask \
-  -X POST -d '{"user_id":"test","question":"Hello"}'
-# Should return 200
+curl -H "X-API-Key: $KEY" $BASE/ask \
+  -X POST -H "Content-Type: application/json" \
+  -d '{"question":"Tìm khách sạn ở Đà Nẵng dưới 1 triệu"}'
+# → 200 với câu trả lời TravelBuddy
 
 # 4. Rate limiting
 for i in {1..15}; do 
-  curl -H "X-API-Key: YOUR_KEY" https://your-app.railway.app/ask \
-    -X POST -d '{"user_id":"test","question":"test"}'; 
+  curl -s -H "X-API-Key: $KEY" $BASE/ask \
+    -X POST -H "Content-Type: application/json" \
+    -d '{"question":"test"}' | python -c "import sys,json; d=json.load(sys.stdin); print(d.get('detail','ok'))"
 done
-# Should eventually return 429
+# → Sau ~10 requests sẽ trả về 429 Too Many Requests
 ```
 
 ---
@@ -188,7 +194,7 @@ done
 **Submit your GitHub repository URL:**
 
 ```
-https://github.com/your-username/day12-agent-deployment
+https://github.com/dancru299/Day12-NguyenAnhDuc-2A202600387
 ```
 
 **Deadline:** 17/4/2026
