@@ -31,8 +31,9 @@ import uvicorn
 
 from app.config import settings
 
-# Mock LLM (thay bằng OpenAI/Anthropic khi có API key)
-from utils.mock_llm import ask as llm_ask
+# TravelBuddy Agent — tích hợp từ Lab 4 (LangGraph + GPT-4o-mini)
+# Tự động fallback về mock LLM nếu thiếu API key hoặc LangGraph
+from app.travel_agent import ask as llm_ask
 
 # ─────────────────────────────────────────────────────────
 # Logging — JSON structured
@@ -145,7 +146,10 @@ async def request_middleware(request: Request, call_next):
         # Security headers
         response.headers["X-Content-Type-Options"] = "nosniff"
         response.headers["X-Frame-Options"] = "DENY"
-        response.headers.pop("server", None)
+        try:
+            del response.headers["server"]
+        except KeyError:
+            pass
         duration = round((time.time() - start) * 1000, 1)
         logger.info(json.dumps({
             "event": "request",

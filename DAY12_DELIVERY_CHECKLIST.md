@@ -108,23 +108,23 @@ Create a file `DEPLOYMENT.md` with your deployed service information:
 # Deployment Information
 
 ## Public URL
-https://your-agent.railway.app
+https://efficient-exploration-production-a2b0.up.railway.app
 
 ## Platform
-Railway / Render / Cloud Run
+Railway
 
 ## Test Commands
 
 ### Health Check
 ```bash
-curl https://your-agent.railway.app/health
-# Expected: {"status": "ok"}
+curl https://efficient-exploration-production-a2b0.up.railway.app/health
+{"status":"ok","uptime_seconds":365.0,"platform":"Railway","timestamp":"2026-04-17T14:36:51.434290+00:00"}
 ```
 
 ### API Test (with authentication)
 ```bash
-curl -X POST https://your-agent.railway.app/ask \
-  -H "X-API-Key: YOUR_KEY" \
+curl -X POST https://efficient-exploration-production-a2b0.up.railway.app/ask \
+  -H "X-API-Key: 1234567890" \
   -H "Content-Type: application/json" \
   -d '{"user_id": "test", "question": "Hello"}'
 ```

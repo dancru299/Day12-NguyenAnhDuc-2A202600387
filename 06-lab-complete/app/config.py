@@ -3,6 +3,13 @@ import os
 import logging
 from dataclasses import dataclass, field
 
+# Load .env file (nếu có) — an toàn: không ghi đè env vars đã set từ OS/cloud
+try:
+    from dotenv import load_dotenv
+    load_dotenv(override=False)
+except ImportError:
+    pass
+
 
 @dataclass
 class Settings:
