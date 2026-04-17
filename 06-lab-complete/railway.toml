@@ -1,8 +1,10 @@
 [build]
-builder = "DOCKERFILE"
+# Dùng NIXPACKS thay DOCKERFILE — Railway tự detect Python + requirements.txt
+# Đơn giản hơn, ít lỗi hơn, tự động handle dependencies
+builder = "NIXPACKS"
 
 [deploy]
-startCommand = "uvicorn app.main:app --host 0.0.0.0 --port $PORT --workers 2"
+startCommand = "uvicorn app.main:app --host 0.0.0.0 --port $PORT"
 healthcheckPath = "/health"
 healthcheckTimeout = 30
 restartPolicyType = "ON_FAILURE"
